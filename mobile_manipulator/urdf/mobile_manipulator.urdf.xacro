@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot name="mobile_manipulator" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Include TurtleBot3 Waffle URDF -->
+  <xacro:include filename="$(find mm_robot_description)/urdf/turtlebot3_waffle_pi_for_open_manipulator.urdf.xacro"/>
+
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="$(find manipulator)/urdf/manipulator.gazebo.xacro" />
+
+  <!-- Import Transmission -->
+  <xacro:include filename="$(find manipulator)/urdf/manipulator.transmission.xacro" />
+
+  <!-- Import URDF -->
+  <xacro:include filename="$(find manipulator)/urdf/manipulator.urdf.xacro" />
+
+
+  <xacro:property name="mf" value="2"/>
+  <!-- Base fixed joint -->
+  <joint name="base_fixed" type="fixed">
+    <origin xyz="${mf*0.03} 0.0 ${mf*0.091}" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="arm_base"/>
+  </joint>
+  
+  <link name="weight_link">
+    <visual>
+      <origin xyz="0 0 0.01" rpy="0 0 0"/>
+      <geometry>
+      <box size="0.08 0.08 0.02"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin xyz="3.0876154e-04 0.0000000e+00 -1.2176461e-04" />
+      <mass value="5.0" />
+       <inertia ixx="0.003483333" ixy="0.0" ixz="0.0"
+           iyy="0.003483333" iyz="0.0"
+           izz="0.000693333"/>
+    </inertial>
+  </link>
+
+  <joint name="weight_joint" type="fixed">
+    <origin xyz="${mf*-0.15} 0.0 ${mf*0.091}" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="weight_link"/>
+  </joint>
+
+</robot>
